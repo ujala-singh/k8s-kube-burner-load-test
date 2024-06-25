@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-burner-pod
+  namespace: default
+spec:
+  serviceAccountName: kube-burner-sa
+  containers:
+  - name: kube-burner-container
+    image: jolly3/kube-burner:latest
+    env:
+    - name: JOB_ITERATIONS
+      value: "10"
+    - name: QPS
+      value: "500"
+    - name: BURST
+      value: "500"
+    - name: SECRET_REPLICAS
+      value: "600"
+    - name: DEPLOYMENT_REPLICAS
+      value: "600"
+    - name: SERVICEACCOUNT_REPLICAS
+      value: "500"
+    - name: SERVICE_REPLICAS
+      value: "500"
+    - name: CONFIGMAP_REPLICAS
+      value: "500"
+    volumeMounts:
+    - name: kube-burner-config
+      mountPath: /kube-burner/configs
+    - name: kube-burner-templates
+      mountPath: /kube-burner/templates
+  volumes:
+  - name: kube-burner-config
+    configMap:
+      name: kube-burner-config
+  - name: kube-burner-templates
+    configMap:
+      name: kube-burner-templates

@@ -1,0 +1,52 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-intensive-{{.Replica}}
+  labels:
+    group: load
+    svc: api-intensive-{{.Replica}}
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      name: api-intensive-{{.Replica}}
+  template:
+    metadata:
+      labels:
+        group: load
+        name: api-intensive-{{.Replica}}
+    spec:
+      nodeSelector:
+        TENANT-NAME: ha-testing
+      containers:
+      - image: registry.k8s.io/pause:3.1
+        name: api-intensive-{{.Replica}}
+        resources:
+          requests:
+            cpu: 2m
+            memory: 2Mi
+        volumeMounts:
+          - name: configmap
+            mountPath: /var/configmap
+          - name: secret
+            mountPath: /var/secret
+      dnsPolicy: Default
+      serviceAccountName: service-account-{{.Replica}}
+      terminationGracePeriodSeconds: 1
+      tolerations:
+      - key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 900
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 900
+      volumes:
+        - name: configmap
+          configMap:
+            name: configmap-{{.Replica}}
+        - name: secret
+          secret:
+            secretName: secret-{{.Replica}}

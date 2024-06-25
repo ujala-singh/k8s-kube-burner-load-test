@@ -1,0 +1,33 @@
+---
+global:
+  gc: true
+  indexerConfig:
+    type: local
+  measurements:
+  - name: podLatency
+jobs:
+  - name: api-intensive
+    jobIterations: {{JOB_ITERATIONS}}
+    qps: {{QPS}}
+    burst: {{BURST}}
+    namespacedIterations: true
+    namespace: api-intensive
+    podWait: false
+    cleanup: true
+    jobPause: 1m
+    waitWhenFinished: true
+    objects:
+      - objectTemplate: /etc/kube-burner/templates/secret.yaml
+        replicas: {{SECRET_REPLICAS}}
+      - objectTemplate: /etc/kube-burner/templates/deployment.yaml
+        replicas: {{DEPLOYMENT_REPLICAS}}
+      - objectTemplate: /etc/kube-burner/templates/serviceAccount.yaml
+        replicas: {{SERVICEACCOUNT_REPLICAS}}
+      - objectTemplate: /etc/kube-burner/templates/service.yaml
+        replicas: {{SERVICE_REPLICAS}}
+      - objectTemplate: /etc/kube-burner/templates/configmap.yaml
+        replicas: {{CONFIGMAP_REPLICAS}}
+    churnPercent: 10
+    churnDuration: 5m 
+    churnDelay: 15s
+    churn: true
