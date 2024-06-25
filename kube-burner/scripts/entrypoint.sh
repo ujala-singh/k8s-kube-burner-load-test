@@ -12,3 +12,4 @@ sed -i "s/CONFIGMAP_REPLICAS/$CONFIGMAP_REPLICAS/g" /etc/kube-burner/config.yaml
 
 # Run kube-burner with the provided config
 kube-burner init --config /etc/kube-burner/config.yaml
+exit 0
