@@ -11,7 +11,7 @@ COPY kube-burner/templates/serviceAccount.yaml /etc/kube-burner/templates/servic
 COPY kube-burner/config/api-intensive.yaml /etc/kube-burner/config.yaml
 
 # Script to replace placeholders with environment variables
-COPY entrypoint.sh /etc/kube-burner/entrypoint.sh
+COPY kube-burner/scripts/entrypoint.sh /etc/kube-burner/entrypoint.sh
 RUN chmod +x /etc/kube-burner/entrypoint.sh
 
 # Set the entrypoint
