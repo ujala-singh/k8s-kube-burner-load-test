@@ -117,7 +117,7 @@ Ensure the following environment variables are set when running the Docker conta
 
 Apply the Pod manifest:
 ```
-kubectl apply -f pod-manifest.yaml
+kubectl apply -f kube-burner-pod.yaml
 ```
 
 # Summary
